@@ -50,5 +50,16 @@ export const pageQuery = graphql`
         description
       }
     }
+    allSlugYaml(filter: { slug: { eq: $slug } }) {
+      edges {
+        node {
+          id
+          name
+          email
+          message
+          date
+        }
+      }
+    }
   }
 `

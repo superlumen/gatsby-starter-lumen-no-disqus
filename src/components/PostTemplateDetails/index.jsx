@@ -7,6 +7,8 @@ class PostTemplateDetails extends React.Component {
   render() {
     const { subtitle, author } = this.props.data.site.siteMetadata
     const post = this.props.data.markdownRemark
+    const comments =
+      this.props.data.allSlugYaml && this.props.data.allSlugYaml.edges
     const tags = post.fields.tagSlugs
 
     const homeBlock = (
@@ -32,11 +34,28 @@ class PostTemplateDetails extends React.Component {
       </div>
     )
 
+    const commentsList =
+      comments && comments.length ? (
+        comments.map(comment => (
+          <div key={comment.node.id}>
+            <p>
+              Name: {comment.node.name}
+              <br />
+              Comment: {comment.node.message}
+              <br />
+              Date: {comment.node.date}
+            </p>
+          </div>
+        ))
+      ) : (
+        <p>No comments yet.</p>
+      )
+
     const commentsBlock = (
       <div>
         <hr />
         <h2>Comments</h2>
-        <p>No comments yet.</p>
+        {commentsList}
         <h3>Add a comment</h3>
         <form
           method="POST"
