@@ -56,8 +56,10 @@ export const pageQuery = graphql`
           id
           name
           email
-          message
           date
+          fields {
+            messageHtml
+          }
         }
       }
     }

@@ -41,10 +41,14 @@ class PostTemplateDetails extends React.Component {
             <p>
               Name: {comment.node.name}
               <br />
-              Comment: {comment.node.message}
-              <br />
               Date: {comment.node.date}
             </p>
+            <div
+              className="comment-body"
+              dangerouslySetInnerHTML={{
+                __html: comment.node.fields.messageHtml,
+              }}
+            />
           </div>
         ))
       ) : (
