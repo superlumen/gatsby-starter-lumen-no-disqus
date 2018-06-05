@@ -4,6 +4,16 @@ const path = require('path')
 const lost = require('lost')
 const pxtorem = require('postcss-pxtorem')
 const slash = require('slash')
+const toHAST = require('mdast-util-to-hast')
+const hastToHTML = require('hast-util-to-html')
+const Remark = require('remark')
+
+// Initialise remark
+const remark = new Remark().data('settings', {
+  commonmark: true,
+  footnotes: true,
+  pedantic: true,
+})
 
 exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
@@ -95,6 +105,25 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
 
 exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
   const { createNodeField } = boundActionCreators
+
+  // If this is a YAML node
+  if (_.get(node, 'internal.type') === `SlugYaml`) {
+    // Generate an HTML version of the markdown field `message`
+    const ast = remark.parse(_.get(node, 'message'))
+    const htmlAst = toHAST(ast, { allowDangerousHTML: true })
+    const html = hastToHTML(htmlAst, {
+      allowDangerousHTML: true,
+    })
+
+    console.log('Generated html #D64lb7', node, html)
+
+    // Add our generated HTML as a field to this node
+    createNodeField({
+      node,
+      name: 'messageHtml',
+      value: html,
+    })
+  }
 
   if (node.internal.type === 'File') {
     const parsedFilePath = path.parse(node.absolutePath)
