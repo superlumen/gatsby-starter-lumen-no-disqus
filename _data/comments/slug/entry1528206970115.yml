@@ -2,7 +2,7 @@ _id: 333a3240-68c8-11e8-8940-6741680ba91a
 slug: '/posts/humane-typography-in-the-digital-age/'
 name: John Doe
 email: 5e040e22ec8b7f7196c9be5f2f8b0ef7
-message: 'Test comment with `markdown`'
+message: "Test comment with `markdown`.\n\nOver multiple lines.\n\nWith five lines even"
 date: 1528206970
 timestamp: 1528206970
 layout: post
